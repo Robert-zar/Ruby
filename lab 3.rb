@@ -298,3 +298,80 @@ class AbstractFactory
   # и той же конкретной вариации.
   #
   # @abstract
+class AbstractProductB
+    # Продукт B способен работать самостоятельно...
+    #
+    # @abstract
+    def useful_function_b
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  
+    # ...а также взаимодействовать с Продуктами A той же вариации.
+    #
+    # Абстрактная Фабрика гарантирует, что все продукты, которые она создает,
+    # имеют одинаковую вариацию и, следовательно, совместимы.
+    #
+    # @abstract
+    #
+    # @param [AbstractProductA] collaborator
+    def another_useful_function_b(_collaborator)
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  end
+  
+  # Конкретные Продукты создаются соответствующими Конкретными Фабриками.
+  class ConcreteProductB1 < AbstractProductB
+    # @return [String]
+    def useful_function_b
+      'The result of the product B1.'
+    end
+  
+    # Продукт B1 может корректно работать только с Продуктом A1. Тем не менее, он
+    # принимает любой экземпляр Абстрактного Продукта А в качестве аргумента.
+    #
+    # @param [AbstractProductA] collaborator
+    #
+    # @return [String]
+    def another_useful_function_b(collaborator)
+      result = collaborator.useful_function_a
+      "The result of the B1 collaborating with the (#{result})"
+    end
+  end
+  
+  class ConcreteProductB2 < AbstractProductB
+    # @return [String]
+    def useful_function_b
+      'The result of the product B2.'
+    end
+  
+    # Продукт B2 может корректно работать только с Продуктом A2. Тем не менее, он
+    # принимает любой экземпляр Абстрактного Продукта А в качестве аргумента.
+    #
+    # @param [AbstractProductA] collaborator
+    def another_useful_function_b(collaborator)
+      result = collaborator.useful_function_a
+      "The result of the B2 collaborating with the (#{result})"
+    end
+  end
+  
+  # Клиентский код работает с фабриками и продуктами только через абстрактные
+  # типы: Абстрактная Фабрика и Абстрактный Продукт. Это позволяет передавать
+  # любой подкласс фабрики или продукта клиентскому коду, не нарушая его.
+  #
+  # @param [AbstractFactory] factory
+  def client_code(factory)
+    product_a = factory.create_product_a
+    product_b = factory.create_product_b
+  
+    puts product_b.useful_function_b.to_s
+    puts product_b.another_useful_function_b(product_a).to_s
+  end
+  
+  # Клиентский код может работать с любым конкретным классом фабрики.
+  puts 'Client: Testing client code with the first factory type:'
+  client_code(ConcreteFactory1.new)
+  
+  puts "\n"
+  
+  puts 'Client: Testing the same client code with the second factory type:'
+  client_code(ConcreteFactory2.new)

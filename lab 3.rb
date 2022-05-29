@@ -230,3 +230,71 @@
 # вариаций, но продукты одной вариации несовместимы с продуктами другой.
 
  @abstract
+class AbstractFactory
+    # @abstract
+    def create_product_a
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  
+    # @abstract
+    def create_product_b
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  end
+  
+  # Конкретная Фабрика производит семейство продуктов одной вариации. Фабрика
+  # гарантирует совместимость полученных продуктов. Обратите внимание, что
+  # сигнатуры методов Конкретной Фабрики возвращают абстрактный продукт, в то
+  # время как внутри метода создается экземпляр конкретного продукта.
+  class ConcreteFactory1 < AbstractFactory
+    def create_product_a
+      ConcreteProductA1.new
+    end
+  
+    def create_product_b
+      ConcreteProductB1.new
+    end
+  end
+  
+  # Каждая Конкретная Фабрика имеет соответствующую вариацию продукта.
+  class ConcreteFactory2 < AbstractFactory
+    def create_product_a
+      ConcreteProductA2.new
+    end
+  
+    def create_product_b
+      ConcreteProductB2.new
+    end
+  end
+  
+  # Каждый отдельный продукт семейства продуктов должен иметь базовый интерфейс.
+  # Все вариации продукта должны реализовывать этот интерфейс.
+  #
+  # @abstract
+  class AbstractProductA
+    # @abstract
+    #
+    # @return [String]
+    def useful_function_a
+      raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
+    end
+  end
+  
+  # Конкретные продукты создаются соответствующими Конкретными Фабриками.
+  class ConcreteProductA1 < AbstractProductA
+    def useful_function_a
+      'The result of the product A1.'
+    end
+  end
+  
+  class ConcreteProductA2 < AbstractProductA
+    def useful_function_a
+      'The result of the product A2.'
+    end
+  end
+  
+  # Базовый интерфейс другого продукта. Все продукты могут взаимодействовать друг
+  # с другом, но правильное взаимодействие возможно только между продуктами одной
+  # и той же конкретной вариации.
+  #
+  # @abstract

@@ -328,7 +328,7 @@ def countRu(s)
 end
 
 def polindrom()
-  s = "лешанаполкеклопанашел"
+  s = "далдалушёл"
  a =s.scan /А-я/
  puts a == a.reverse
 end
@@ -338,3 +338,68 @@ def datecheck
   s = "18.12.2001 15.12.200o"
   puts s.scan(/([0-2][0-9]|3[0-1]).(0[1-9]|1[0-2]).([0-9]{4})/).map{|e| e.join('.')}.join(" ")
 end
+
+     #задание 6_0
+# s = "Я родился 5 марта 2001 года"
+# puts s.scan(/([0-2][0-9]|3[0-1]).(0[1-9]|1[0-2]|января|февраля|марта|апреля|мая|июня|июля|августа|сентября|октября|ноября|декабря).([0-9]{4})/).map{|e| e.join('.')}.join(" ")
+
+
+#задание 6_1
+# puts "Введите строку:"
+# str= STDIN.gets.chomp
+# puts  str.scan(/\-\d+\.\d+|\d+\.\d+/).map{ |n| n.to_f }.max
+
+
+#задание 6_9
+# puts "Введите строку:"
+# str= STDIN.gets.chomp
+# puts str.scan(/[-+]?\d+\/(?:\d{2,}|[1-9])/).map{ |i| i.split("/").map{ |j| j.to_i } }.map{ |i| Rational(i[0], i[1]) }.min
+
+
+#задание 6_18
+# puts "Введите строку:"
+# str= STDIN.gets.chomp
+# puts  str.scan(/\d+/).map{ |i| i.size }.max
+
+
+
+def add_list_from_file(name_file)
+  if File.exist? name_file+'.txt'
+    File.open(name_file+'.txt', 'r') do |file|
+      list = Array.new
+      for line in file.readlines()
+        list.append(line)
+      end
+      return list
+  end
+  else
+    return []
+  end
+end
+
+
+
+
+#задание 7_02
+def count_words(array)
+  count = 0
+  for word in array.split()
+    count += 1
+  end
+  return count
+end
+
+
+
+
+#задание 7_1
+def raznica_glas_soglas(s)
+  ss=s.delete " "
+  count_char=ss.length
+  count_sogl=(ss.delete! "аАОоЭэЕеиИыЫуУёЁюЮяЯ").length
+  count_glas=count_char-count_sogl
+  return (count_glas-count_sogl).abs
+  end
+
+# kek = add_list_from_file('rows')
+# puts kek.sort_by {|str| -raznica_glas_soglas(str)}
